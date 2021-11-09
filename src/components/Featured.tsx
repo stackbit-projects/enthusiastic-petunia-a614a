@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Markdown from 'markdown-to-jsx';
 import { mapStylesToClassNames as mapStyles } from '../../utils/map-styles-to-class-names';
 import { getComponent } from '../../components-registry';
-import ImageBlock from '../ImageBlock';
+import ImageBlock from '@stackbit/components/dist/ImageBlock';
 
 export default function FeaturedPeopleSection(props) {
     const cssId = props.elementId || null;
