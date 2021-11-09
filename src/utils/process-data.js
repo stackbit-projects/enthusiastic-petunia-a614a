@@ -68,7 +68,6 @@ function resolveReferenceFields({ fieldNames = [], maxDepth = 2 } = {}) {
         const objects = data.objects.map((object) => {
             let refKeyPathStack = [];
             return mapDeep(object, (value, keyPath) => {
-                console.log(value, keyPath);
                 if (keyPath.includes('__metadata')) {
                     return value;
                 }
