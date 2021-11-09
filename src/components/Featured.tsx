@@ -109,6 +109,7 @@ function postsVariantA(props) {
         return null;
     }
     const ImageBlock = getComponent('ImageBlock');
+    console.log(post)
     return (
         <div className="grid gap-6 md:grid-cols-3 lg:gap-8" data-sb-field-path=".posts">
             {posts.map((post, index) => {
