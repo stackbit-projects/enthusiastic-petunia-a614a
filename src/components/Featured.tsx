@@ -8,7 +8,7 @@ import ImageBlock from '@stackbit/components/dist/components/ImageBlock';
 import dayjs from 'dayjs';
 import { mapStylesToClassNames as mapStyles } from '../../utils/map-styles-to-class-names';
 import getPageUrlPath from '@stackbit/components/dist/utils/get-page-url-path';
-import Link from '../../utils/link';
+import Link from '@stackbit/components/dist/utils/link';
 
 export default function FeaturedPostsSection(props) {
     const cssId = props.elementId || null;
