@@ -93,7 +93,7 @@ function resolveReferenceFields({ fieldNames = [], maxDepth = 2 } = {}) {
                     console.log(value);
                     return objectsByFilePath[value];
                 }
-                return value;
+                return null;
             });
         }).filter(Boolean);
 
