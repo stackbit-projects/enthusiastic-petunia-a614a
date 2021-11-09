@@ -6,7 +6,7 @@ registerComponents({
     // Register all Stackbit components
     ...componentsMap,
 
-FeaturedPostsSection: require("")
+    FeaturedPostsSection: require("./Featured.tsx")
     // Override any static or dynamic component,
     // or register your own dynamic component.
 });
