@@ -1,11 +1,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import Markdown from 'markdown-to-jsx';
-import { mapStylesToClassNames as mapStyles } from '@stackbit/components/dist/utils/map-styles-to-class-names';
-import { getComponent } from '@stackbit/components/dist/components-registry';
-import ImageBlock from '@stackbit/components/dist/components/ImageBlock';
+import dayjs from 'dayjs';
+import { getComponent } from '../../components-registry';
+import { mapStylesToClassNames as mapStyles } from '../../utils/map-styles-to-class-names';
+import getPageUrlPath from '../../utils/get-page-url-path';
+import Link from '../../utils/link';
 
-export default function FeaturedPeopleSection(props) {
+export default function FeaturedPostsSection(props) {
     const cssId = props.elementId || null;
     const colors = props.colors || 'colors-a';
     const sectionStyles = props.styles?.self || {};
@@ -16,7 +17,7 @@ export default function FeaturedPeopleSection(props) {
             className={classNames(
                 'sb-component',
                 'sb-component-section',
-                'sb-component-featured-people-section',
+                'sb-component-featured-posts-section',
                 colors,
                 'flex',
                 'flex-col',
@@ -36,16 +37,16 @@ export default function FeaturedPeopleSection(props) {
         >
             <div className={classNames('flex', 'w-full', sectionStyles.justifyContent ? mapStyles({ justifyContent: sectionStyles.justifyContent }) : null)}>
                 <div className={classNames('w-full', sectionStyles.width ? mapMaxWidthStyles(sectionStyles.width) : null)}>
-                    {featuredPeopleHeader(props)}
-                    {featuredPeopleVariants(props)}
-                    {featuredPeopleActions(props)}
+                    {featuredPostsHeader(props)}
+                    {featuredPostsVariants(props)}
+                    {featuredPostsActions(props)}
                 </div>
             </div>
         </div>
     );
 }
 
-function featuredPeopleHeader(props) {
+function featuredPostsHeader(props) {
     if (!props.title && !props.subtitle) {
         return null;
     }
@@ -66,7 +67,7 @@ function featuredPeopleHeader(props) {
     );
 }
 
-function featuredPeopleActions(props) {
+function featuredPostsActions(props) {
     const actions = props.actions || [];
     if (actions.length === 0) {
         return null;
@@ -85,147 +86,250 @@ function featuredPeopleActions(props) {
     );
 }
 
-function featuredPeopleVariants(props) {
+function featuredPostsVariants(props) {
     const variant = props.variant || 'variant-a';
     switch (variant) {
         case 'variant-a':
-            return peopleVariantA(props);
+            return postsVariantA(props);
         case 'variant-b':
-            return peopleVariantB(props);
+            return postsVariantB(props);
         case 'variant-c':
-            return peopleVariantC(props);
+            return postsVariantC(props);
+        case 'variant-d':
+            return postsVariantD(props);
     }
     return null;
 }
 
-function peopleVariantA(props) {
-    const people = props.people || [];
-    if (people.length === 0) {
+function postsVariantA(props) {
+    const posts = props.posts || [];
+    if (posts.length === 0) {
         return null;
     }
+    const ImageBlock = getComponent('ImageBlock');
     return (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8" data-sb-field-path=".people">
-            {people.map((person, index) => (
-                <article key={index} data-sb-field-path={`.${index}`}>
-                    {person.image && (
-                        <div className="h-0 w-full pt-1/1 relative" data-sb-field-path=".image">
-                            <ImageBlock {...person.image} className="absolute left-0 h-full object-cover top-0 w-full" />
-                        </div>
-                    )}
-                    <div
-                        className={classNames('mb-4', {
-                            'pt-6': person.image
-                        })}
-                    >
-                        {(person.firstName || person.lastName) && (
-                            <h2 className="text-xl sm:text-2xl">
-                                {person.firstName && <span data-sb-field-path=".firstName">{person.firstName}</span>}{' '}
-                                {person.lastName && <span data-sb-field-path=".lastName">{person.lastName}</span>}
-                            </h2>
+        <div className="grid gap-6 md:grid-cols-3 lg:gap-8" data-sb-field-path=".posts">
+            {posts.map((post, index) => {
+                const dateTimeAttr = dayjs(post.date).format('YYYY-MM-DD HH:mm:ss');
+                const formattedDate = dayjs(post.date).format('MMMM D, YYYY');
+                return (
+                    <article key={index} className="sb-card" data-sb-object-id={post.__metadata.id}>
+                        {post.featuredImage && (
+                            <Link href={getPageUrlPath(post)} className="block h-0 w-full pt-9/16 relative" data-sb-field-path="featuredImage">
+                                <ImageBlock {...post.featuredImage} className="absolute left-0 top-0 h-full w-full object-cover" />
+                            </Link>
                         )}
-                        {person.role && <p data-sb-field-path=".role">{person.role}</p>}
-                    </div>
-                </article>
-            ))}
-        </div>
-    );
-}
-
-function peopleVariantB(props) {
-    const people = props.people || [];
-    if (people.length === 0) {
-        return null;
-    }
-    return (
-        <div className="grid gap-x-8 gap-y-10 lg:grid-cols-2" data-sb-field-path=".people">
-            {people.map((person, index) => (
-                <article key={index} className="sm:flex" data-sb-field-path={`.${index}`}>
-                    {person.image && (
-                        <div className="w-full sm:flex-shrink-0 sm:h-full sm:w-1/3">
-                            <div className="block h-0 w-full pt-1/1 relative" data-sb-field-path=".image">
-                                <ImageBlock {...person.image} className="absolute left-0 h-full object-cover top-0 w-full" />
+                        <div className="px-4 py-6 sm:px-6 sm:pb-10">
+                            {props.title ? (
+                                <h3 className="text-xl sm:text-2xl mb-1">
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h3>
+                            ) : (
+                                <h2 className="text-xl sm:text-2xl mb-1">
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h2>
+                            )}
+                            <div className="text-sm mb-3">
+                                <time dateTime={dateTimeAttr} data-sb-field-path="date">
+                                    {formattedDate}
+                                </time>
                             </div>
+                            {post.excerpt && <p data-sb-field-path="excerpt">{post.excerpt}</p>}
                         </div>
-                    )}
-                    <div
-                        className={classNames('mb-4', 'sm:flex-grow', {
-                            'pt-6 sm:pt-0 sm:pl-6': person.image
-                        })}
-                    >
-                        {(person.firstName || person.lastName) && (
-                            <h2 className="text-xl sm:text-2xl">
-                                {person.firstName && <span data-sb-field-path=".firstName">{person.firstName}</span>}{' '}
-                                {person.lastName && <span data-sb-field-path=".lastName">{person.lastName}</span>}
-                            </h2>
-                        )}
-                        {person.role && <p data-sb-field-path=".role">{person.role}</p>}
-                        {person.bio && (
-                            <Markdown
-                                options={{ forceBlock: true, forceWrapper: true }}
-                                className={classNames({
-                                    'mt-4': person.firstName || person.lastName || person.role
-                                })}
-                                data-sb-field-path=".bio"
-                            >
-                                {person.bio}
-                            </Markdown>
-                        )}
-                    </div>
-                </article>
-            ))}
+                    </article>
+                );
+            })}
         </div>
     );
 }
 
-function peopleVariantC(props) {
-    const people = props.people || [];
-    if (people.length === 0) {
+function postsVariantB(props) {
+    const posts = props.posts || [];
+    if (posts.length === 0) {
         return null;
     }
-    const middleIndex = Math.floor(people.length / 2);
-    const peopleLeft = people.slice(0, middleIndex);
-    const peopleRight = people.slice(-middleIndex);
+    const ImageBlock = getComponent('ImageBlock');
     return (
-        <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2" data-sb-field-path=".people">
-            {peopleLeft.length > 0 && <div className="sm:mt-32">{peopleListVariantC(peopleLeft)}</div>}
-            {peopleRight.length > 0 && <div>{peopleListVariantC(peopleRight, middleIndex)}</div>}
+        <div className="grid gap-6 md:grid-cols-3 lg:gap-8" data-sb-field-path=".posts">
+            {posts.map((post, index) => {
+                const dateTimeAttr = dayjs(post.date).format('YYYY-MM-DD HH:mm:ss');
+                const formattedDate = dayjs(post.date).format('MMMM D, YYYY');
+                return (
+                    <article
+                        key={index}
+                        className={classNames('sb-card', {
+                            'md:col-span-2': index % 4 === 0 || (index + 1) % 4 === 0
+                        })}
+                        data-sb-object-id={post.__metadata.id}
+                    >
+                        {post.featuredImage && (
+                            <Link
+                                href={getPageUrlPath(post)}
+                                className="block h-0 w-full pt-9/16 relative md:pt-0 md:h-60 lg:h-72"
+                                data-sb-field-path="featuredImage"
+                            >
+                                <ImageBlock {...post.featuredImage} className="absolute left-0 top-0 h-full w-full object-cover" />
+                            </Link>
+                        )}
+                        <div className="px-4 py-6 sm:px-6 sm:pb-10">
+                            {props.title ? (
+                                <h3 className="text-xl sm:text-2xl mb-1">
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h3>
+                            ) : (
+                                <h2 className="text-xl sm:text-2xl mb-1">
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h2>
+                            )}
+                            <div className="text-sm mb-3">
+                                <time dateTime={dateTimeAttr} data-sb-field-path="date">
+                                    {formattedDate}
+                                </time>
+                            </div>
+                            {post.excerpt && <p data-sb-field-path="excerpt">{post.excerpt}</p>}
+                        </div>
+                    </article>
+                );
+            })}
         </div>
     );
 }
 
-function peopleListVariantC(people, annotIndexStart = 0) {
-    return people.map((person, index, arr) => (
-        <article key={index} className={classNames(arr.length - 1 === index ? null : 'mb-12')} data-sb-field-path={`.${annotIndexStart + index}`}>
-            {person.image && (
-                <div data-sb-field-path=".image">
-                    <ImageBlock {...person.image} className="w-full" />
-                </div>
-            )}
-            <div
-                className={classNames({
-                    'mt-4': person.image
-                })}
-            >
-                {(person.firstName || person.lastName || person.role) && (
-                    <h2
-                        className={classNames('text-xl', 'sm:text-2xl', {
-                            'mb-3': person.bio
+function postsVariantC(props) {
+    const posts = props.posts || [];
+    if (posts.length === 0) {
+        return null;
+    }
+    const ImageBlock = getComponent('ImageBlock');
+    return (
+        <div className="grid gap-6 md:grid-cols-3 lg:gap-8" data-sb-field-path=".posts">
+            {posts.map((post, index) => {
+                const isFullWidth = index % 4 === 0;
+                const dateTimeAttr = dayjs(post.date).format('YYYY-MM-DD HH:mm:ss');
+                const formattedDate = dayjs(post.date).format('MMMM D, YYYY');
+                return (
+                    <article
+                        key={index}
+                        className={classNames('sb-card', {
+                            'md:col-span-3 md:flex': isFullWidth
                         })}
+                        data-sb-object-id={post.__metadata.id}
                     >
-                        {person.firstName && <span data-sb-field-path=".firstName">{person.firstName}</span>}{' '}
-                        {person.lastName && <span data-sb-field-path=".lastName">{person.lastName}</span>}{' '}
-                        {(person.firstName || person.lastName) && person.role && <span className="mx-1">|</span>}{' '}
-                        {person.role && <span data-sb-field-path=".role">{person.role}</span>}
-                    </h2>
-                )}
-                {person.bio && (
-                    <Markdown options={{ forceBlock: true, forceWrapper: true }} className="sb-markdown" data-sb-field-path=".bio">
-                        {person.bio}
-                    </Markdown>
-                )}
-            </div>
-        </article>
-    ));
+                        {post.featuredImage && (
+                            <div
+                                className={classNames({
+                                    'md:w-2/5': isFullWidth
+                                })}
+                            >
+                                <Link
+                                    href={getPageUrlPath(post)}
+                                    className={classNames('block', 'h-0', 'w-full', 'pt-9/16', 'relative', {
+                                        'md:h-60 md:min-h-full md:pt-0 lg:h-72': isFullWidth
+                                    })}
+                                    data-sb-field-path="featuredImage"
+                                >
+                                    <ImageBlock {...post.featuredImage} className="absolute left-0 top-0 h-full w-full object-cover" />
+                                </Link>
+                            </div>
+                        )}
+                        <div
+                            className={classNames('px-4 pt-6 pb-8 sm:px-6', {
+                                'md:w-3/5 md:pt-8 md:pb-10': isFullWidth
+                            })}
+                        >
+                            {props.title ? (
+                                <h3
+                                    className={classNames('text-xl', 'sm:text-2xl', 'mb-1', {
+                                        'md:text-3xl': isFullWidth
+                                    })}
+                                >
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h3>
+                            ) : (
+                                <h2
+                                    className={classNames('text-xl', 'sm:text-2xl', 'mb-1', {
+                                        'md:text-3xl': isFullWidth
+                                    })}
+                                >
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h2>
+                            )}
+                            <div className="text-sm mb-3">
+                                <time dateTime={dateTimeAttr} data-sb-field-path="date">
+                                    {formattedDate}
+                                </time>
+                            </div>
+                            {post.excerpt && <p data-sb-field-path="excerpt">{post.excerpt}</p>}
+                        </div>
+                    </article>
+                );
+            })}
+        </div>
+    );
+}
+
+function postsVariantD(props) {
+    const posts = props.posts || [];
+    if (posts.length === 0) {
+        return null;
+    }
+    const ImageBlock = getComponent('ImageBlock');
+    return (
+        <div>
+            {posts.map((post, index) => {
+                const dateTimeAttr = dayjs(post.date).format('YYYY-MM-DD HH:mm:ss');
+                const formattedDate = dayjs(post.date).format('MMMM D, YYYY');
+                return (
+                    <article key={index} className="sb-card mb-8 md:flex" data-sb-object-id={post.__metadata.id}>
+                        {post.featuredImage && (
+                            <div className="md:w-2/5">
+                                <Link
+                                    href={getPageUrlPath(post)}
+                                    className="block h-0 w-full pt-9/16 relative md:h-60 md:min-h-full md:pt-0 lg:h-72"
+                                    data-sb-field-path="featuredImage"
+                                >
+                                    <ImageBlock {...post.featuredImage} className="absolute left-0 top-0 h-full w-full object-cover" />
+                                </Link>
+                            </div>
+                        )}
+                        <div className="px-4 pt-6 pb-8 sm:px-6 md:w-3/5 md:pt-8 md:pb-10">
+                            {props.title ? (
+                                <h3 className="text-xl sm:text-2xl md:text-3xl mb-1">
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h3>
+                            ) : (
+                                <h2 className="text-xl sm:text-2xl md:text-3xl mb-1">
+                                    <Link href={getPageUrlPath(post)} data-sb-field-path="title">
+                                        {post.title}
+                                    </Link>
+                                </h2>
+                            )}
+                            <div className="text-sm mb-3">
+                                <time dateTime={dateTimeAttr} data-sb-field-path="date">
+                                    {formattedDate}
+                                </time>
+                            </div>
+                            {post.excerpt && <p data-sb-field-path="excerpt">{post.excerpt}</p>}
+                        </div>
+                    </article>
+                );
+            })}
+        </div>
+    );
 }
 
 function mapMinHeightStyles(height) {
