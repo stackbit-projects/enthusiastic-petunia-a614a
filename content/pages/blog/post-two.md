@@ -4,7 +4,7 @@ layout: PostLayout
 date: '2020-05-21'
 author: content/data/team/hugh-saturation.json
 excerpt: >-
-  Sed in facilisis dui. Nullall molestie risus in mi dapibus, eget porta lorem
+  Sed in facilisis dui. Nulllall molestie risus in mi dapibus, eget porta lorem
   semper. Donec sed facilisis nibh.
 featuredImage:
   type: ImageBlock
