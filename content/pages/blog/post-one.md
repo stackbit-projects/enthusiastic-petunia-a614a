@@ -11,7 +11,7 @@ featuredImage:
   url: /images/dude-holding-fish.png
   altText: Post Image
 bottomSections:
-  - type: CtaSection
+   - type: CtaSection
     colors: colors-a
     title: Let's do this
     text: |-
