@@ -6,7 +6,6 @@ import { getComponent } from '@stackbit/components/dist/components-registry';
 import ImageBlock from '@stackbit/components/dist/components/ImageBlock';
 
 import dayjs from 'dayjs';
-import { getComponent } from '../../components-registry';
 import { mapStylesToClassNames as mapStyles } from '../../utils/map-styles-to-class-names';
 import getPageUrlPath from '../../utils/get-page-url-path';
 import Link from '../../utils/link';
