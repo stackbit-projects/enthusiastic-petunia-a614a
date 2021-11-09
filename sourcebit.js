@@ -3,7 +3,7 @@ const { cssClassesFromFilePath, urlPathFromFilePath } = require('./src/utils/pat
 const { resolveReferenceFields, flattenMarkdownData, postProcessContactFormEmails, resolvePageProps } = require('./src/utils/process-data');
 
 const isDev = process.env.NODE_ENV === 'development';
-
+console.log("sourecbit")
 module.exports = {
     plugins: [
         {
