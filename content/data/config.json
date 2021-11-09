@@ -10,7 +10,7 @@
             "type": "ImageBlock",
             "url": "/images/logo.svg",
             "altText": "Sakanaya logo"
-        },
+        }
         "primaryLinks": [
             {
                 "type": "Link",
