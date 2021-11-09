@@ -23,8 +23,3 @@ contentModels:
     newFilePath: 'blog/{slug}.md'
   Person:
     newFilePath: 'team/{slug}.json'
-models:
-  NewModel:
-    type: page
-    label: 123
-    fields:
