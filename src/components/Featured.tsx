@@ -5,8 +5,6 @@ import { mapStylesToClassNames as mapStyles } from '@stackbit/components/dist/ut
 import { getComponent } from '@stackbit/components/dist/components-registry';
 import ImageBlock from '@stackbit/components/dist/components/ImageBlock';
 
-import * as React from 'react';
-import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { getComponent } from '../../components-registry';
 import { mapStylesToClassNames as mapStyles } from '../../utils/map-styles-to-class-names';
