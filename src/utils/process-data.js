@@ -90,6 +90,7 @@ function resolveReferenceFields({ fieldNames = [], maxDepth = 2 } = {}) {
                 }
                 if (value in objectsByFilePath) {
                     refKeyPathStack.push(keyPath.join('.'));
+                    console.log(value);
                     return objectsByFilePath[value];
                 }
                 return value;
